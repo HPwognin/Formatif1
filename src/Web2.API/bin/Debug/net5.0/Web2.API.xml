@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Web2.API</name>
+    </assembly>
+    <members>
+        <member name="M:Web2.API.Controllers.ProductsController.Get(System.Int32)">
+            <summary>
+            Retourne un étudiant specifique à partir de son id
+            </summary>
+            <remarks>Je manque d'imagination</remarks>
+            <param name="id">id de l'étudiant à retourner</param>   
+            <response code="200">étudiant trouvé et retourné</response>
+            <response code="404">étudiant introuvable pour l'id specifié</response>
+            <response code="500">Oops! le service est indisponible pour le moment</response>
+        </member>
+    </members>
+</doc>
