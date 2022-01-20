@@ -11,6 +11,6 @@ namespace Web2.API.Models
 
         public string Name { get; set; }
 
-        public static List<Product> products = new List<Product>();
+       
     }
 }

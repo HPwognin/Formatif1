@@ -4,15 +4,45 @@
         <name>Web2.API</name>
     </assembly>
     <members>
+        <member name="M:Web2.API.Controllers.ProductsController.Get">
+            <summary>
+            Retourne une liste de produists
+            </summary>
+            /// <response code="200">Les produits ont été trouvés et retournés</response>
+            <response code="404">produit introuvable pour l'id specifié</response>
+            <response code="500">Oops! le service est indisponible pour le moment</response>
+            <returns></returns>
+        </member>
         <member name="M:Web2.API.Controllers.ProductsController.Get(System.Int32)">
             <summary>
-            Retourne un étudiant specifique à partir de son id
-            </summary>
-            <remarks>Je manque d'imagination</remarks>
-            <param name="id">id de l'étudiant à retourner</param>   
-            <response code="200">étudiant trouvé et retourné</response>
-            <response code="404">étudiant introuvable pour l'id specifié</response>
+            Retourne un produit specifique à partir de son id
+            </summary>        
+            <param name="id">id du produit à retourner</param>   
+            <response code="200">produit trouvés et retourné</response>
+            <response code="404">produit introuvable pour l'id specifié</response>
             <response code="500">Oops! le service est indisponible pour le moment</response>
+        </member>
+        <member name="M:Web2.API.Controllers.ProductsController.Post(Web2.API.Models.Product)">
+            <summary>
+            Créé un produit à partir du formulaire rempli par l'utilisateur
+            </summary>
+            <param name="product"></param>
+            <response code="200"> Le produit est créé avec succès</response>
+            <response code="201"> Le produit est créé et retourné</response>
+            <response code="400"> Mauvaise requête, Erreur dans la validation du formulaire</response>
+            <response code="204"> Le produit n'a pu être créé</response>
+            /// <response code="500">Oops! le service est indisponible pour le moment</response>
+            <returns></returns>
+        </member>
+        <member name="M:Web2.API.Controllers.ProductsController.Delete(System.Int32)">
+            <summary>
+            Supprime un produit à partir de son ID
+            </summary>
+            <param name="id">identifiant du produit</param>
+            <response code="204"> Le produit est supprimé avec succès</response>
+            <response code="400"> Le produit est introuvale</response>
+            /// <response code="500">Oops! le service est indisponible pour le moment</response>
+            <returns></returns>
         </member>
     </members>
 </doc>

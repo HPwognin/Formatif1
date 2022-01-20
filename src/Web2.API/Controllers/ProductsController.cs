@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Web2.API.Models;
 
@@ -9,33 +11,46 @@ using Web2.API.Models;
 
 namespace Web2.API.Controllers
 {
-
     
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
     public class ProductsController : ControllerBase
     {
+        public static List<Product> products = new List<Product>();
+
+
+
         // GET: api/<EtudiantsController>
+        /// <summary>
+        /// Retourne une liste de produists
+        /// </summary>
+        /// /// <response code="200">Les produits ont été trouvés et retournés</response>
+        /// <response code="404">produit introuvable pour l'id specifié</response>
+        /// <response code="500">Oops! le service est indisponible pour le moment</response>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get()
         {
-            return Product.products;
+            return products;
         }
 
 
         /// <summary>
-        /// Retourne un étudiant specifique à partir de son id
-        /// </summary>
-        /// <remarks>Je manque d'imagination</remarks>
-        /// <param name="id">id de l'étudiant à retourner</param>   
-        /// <response code="200">étudiant trouvé et retourné</response>
-        /// <response code="404">étudiant introuvable pour l'id specifié</response>
+        /// Retourne un produit specifique à partir de son id
+        /// </summary>        
+        /// <param name="id">id du produit à retourner</param>   
+        /// <response code="200">produit trouvés et retourné</response>
+        /// <response code="404">produit introuvable pour l'id specifié</response>
         /// <response code="500">Oops! le service est indisponible pour le moment</response>
         // GET api/<EtudiantsController>/5
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.ServiceUnavailable)]
         public ActionResult<Product> Get(int id)
         {
-            var product = Product.products.ToList().FirstOrDefault(p => p.Id == id);
+            var product = products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
                 return NotFound();
@@ -43,44 +58,70 @@ namespace Web2.API.Controllers
             return product;
         }
 
+
+        /// <summary>
+        /// Créé un produit à partir du formulaire rempli par l'utilisateur
+        /// </summary>
+        /// <param name="product"></param>
+        /// <response code="200"> Le produit est créé avec succès</response>
+        /// <response code="201"> Le produit est créé et retourné</response>
+        /// <response code="400"> Mauvaise requête, Erreur dans la validation du formulaire</response>
+        /// <response code="204"> Le produit n'a pu être créé</response>
+        /// /// <response code="500">Oops! le service est indisponible pour le moment</response>
+        /// <returns></returns>
         // POST api/<EtudiantsController>
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]        
         public IActionResult Post(Product product)
         {
             if (ModelState.IsValid)
             {
-                Product.products.Add(product);
+                products.Add(product);
                 return CreatedAtAction(nameof(Post), new { id = product.Id }, product);
             }
 
             return BadRequest();
         }
+
         // PUT api/<EtudiantsController>/5
-       /* [HttpPut("{id}")]
-        public IActionResult Put(int id, Etudiant etudiant)
-        {
-            if (id != etudiant.Id)
-                return BadRequest();
+        /* [HttpPut("{id}")]
+         public IActionResult Put(int id, Produit produit)
+         {
+        
+             if (id != produit.Id)
+                 return BadRequest();
 
-            var etudiantExistant = EtudiantService.Obtenir(id);
-            if (etudiantExistant is null)
-                return NotFound();
+            var product = products.FirstOrDefault(p => p.Id == id);
+             if (product is null)
+                 return NotFound();
+        produits.remove(product);
+        produits.Add(produit);
+                    return produit;
+         }*/
 
-            EtudiantService.Modifier(etudiant);
-
-            return NoContent();
-        }*/
-
+        /// <summary>
+        /// Supprime un produit à partir de son ID
+        /// </summary>
+        /// <param name="id">identifiant du produit</param>
+        /// <response code="204"> Le produit est supprimé avec succès</response>
+        /// <response code="400"> Le produit est introuvale</response>
+        /// /// <response code="500">Oops! le service est indisponible pour le moment</response>
+        /// <returns></returns>
         // DELETE api/<EtudiantsController>/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Product), 204)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult Delete(int id)
         {
-            var product = Product.products.ToList().FirstOrDefault(p => p.Id == id);
+            var product = products.FirstOrDefault(p => p.Id == id);
 
             if (product is null)
                 return NotFound();
 
-            Product.products.Remove(product);
+            products.Remove(product);
 
             return NoContent();
         }
